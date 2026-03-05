@@ -1,10 +1,10 @@
-    .text
-    .global main
+.text
+.global main
 
-    .set SVN_SEG_CNTL,      0x43C10000
-    .set SVN_SEG_DATA_BASE, 0x43C10004
-    .set SW_DATA,           0x41220000
-    .set BTN_DATA,          0x41200000
+.set SVN_SEG_CNTL,      0x43C10000
+.set SVN_SEG_DATA_BASE, 0x43C10004
+.set SW_DATA,           0x41220000
+.set BTN_DATA,          0x41200000
 
 main:
     mov r7, #0              @ BCD counter
@@ -18,7 +18,7 @@ Button_Data:
 
 Seven_Segment:
     ldr r6, =SVN_SEG_CNTL
-    mov r5, #1              @ EN=1, M=0 (BCD mode)
+    mov r5, #1
     str r5, [r6]
     ldr r6, =SVN_SEG_DATA_BASE
 
@@ -127,3 +127,4 @@ dd_done:
     add r4, r4, r2
     add r4, r4, r0
     bx lr
+
