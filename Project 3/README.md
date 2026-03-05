@@ -1,4 +1,4 @@
-#### EE 234 Project 3 - Zynq‑7000 Assembly Stopwatch Project
+## EE 234 Project 3 - Zynq‑7000 Assembly Stopwatch Project
 # Gus Ballman
 
 This project implements a complete stopwatch system on the Zynq‑7000 SoC using ARMv7 assembly.  
