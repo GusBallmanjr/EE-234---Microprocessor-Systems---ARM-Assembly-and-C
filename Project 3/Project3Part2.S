@@ -1,10 +1,10 @@
-    .text
-    .global main
+.text
+.global main
 
-    .set SVN_SEG_CNTL,      0x43C10000
-    .set SVN_SEG_DATA_BASE, 0x43C10004
-    .set SW_DATA,           0x41220000
-    .set BTN_DATA,          0x41200000
+.set SVN_SEG_CNTL,      0x43C10000
+.set SVN_SEG_DATA_BASE, 0x43C10004
+.set SW_DATA,           0x41220000
+.set BTN_DATA,          0x41200000
 
 main:
     mov r7, #0              @ BCD counter
@@ -108,3 +108,4 @@ dd_done:
     add r4, r4, r2
     add r4, r4, r0
     bx lr
+
