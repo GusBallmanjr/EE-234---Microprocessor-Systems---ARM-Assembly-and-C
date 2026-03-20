@@ -6,11 +6,11 @@ Work from WSU’s EE 234 ARM‑based microprocessors course. Projects move from 
 ---
 
 ## Focus
-- ARM assembly fundamentals  
-- Bare‑metal C on the Cortex‑A9  
-- Memory‑mapped I/O for LEDs, switches, timers, and sensors  
-- Intro ARM interrupts  
-- Building low‑level drivers and simple embedded systems  
++ ARM assembly fundamentals  
++ Bare‑metal C on the Cortex‑A9  
++ Memory‑mapped I/O for LEDs, switches, timers, and sensors  
++ Intro ARM interrupts  
++ Building low‑level drivers and simple embedded systems  
 
 ---
 
