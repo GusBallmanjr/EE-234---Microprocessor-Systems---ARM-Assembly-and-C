@@ -1,6 +1,6 @@
 #ifndef PROJECT4_H
 #define PROJECT4_H
-#include "UART.c"
+#include "UART.h"
 
 extern void UART1_getS(char data[]);
 
