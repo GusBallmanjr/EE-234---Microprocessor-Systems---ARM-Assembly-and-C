@@ -35,19 +35,21 @@ char UART1_getC(void) {
     while(!UART1_empty_RX());
 
     uint32_t* UART1 = (uint32_t*)(UART1_BASE + 0x30); // FIFO Register
-    return *UART1;
+    return (char)*UART1;
 }
 
 void UART1_putC(char data) {
     while(UART1_empty_TX());
 
     uint32_t* UART1 = (uint32_t*)(UART1_BASE + 0x30); // FIFO Register
-    *UART1 = data;
+    *UART1 = (uint32_t)data;
 }
 
 void UART1_putS(char str[]) {
-    for (int i = 0; str[i - 1] != '\0'; i++) {
-        UART1_putC(str[i]);
+    uint32_t i = 0;
+    while (str[i] != '\0') {
+    	UART1_putC(str[i]);
+    	i++;
     }
 }
 
