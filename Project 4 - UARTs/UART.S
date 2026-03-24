@@ -5,53 +5,80 @@
 .global UART1_putS
 .global UART1_getS
 
-.set UART1_BASE, 0xE0001000
+.set UART1_CR, 0xE0001000
+.set UART1_MR, 0xE0001004
+.set UART1_BAUDGEN, 0xE0001018
 .set UART1_SR, 0xE000102C
-.set UART1_DATA, 0xE0001030
+.set UART1_FIFO, 0xE0001030
+.set UART1_BAUD_RATE_D, 0xE0001034
 
-UART1_configure:
-    ldr r0, =UART1_BASE
+UART1_reset:
+    ldr r1, =UART1_CR
+    mov r2, #3
+    str r2, [r1]
 
-	mov r1, #3
-    str r1, [r0] @ reset
+    mov r2, #0
+    str r2, [r1]
+    bx lr
 
-    mov r1, #0x20      @ Normal Mode, 1 stop bit, no parity, 8 bit length
-    str r1, [r0, #0x4]  @ Mode Register
+configure_UART1:
+    push {lr}
+    bl UART1_reset
+    pop {lr}
 
-	mov r1, #0x7C @ Baudgen
-    str r1, [r0, #0x18]  @ Baudgen register
+    ldr r1, =UART1_MR
+    mov r2, #0x20
+    str r2, [r1]
 
-   	mov r1, #6 @ Baud_Div
-    str r1, [r0, #0x34] @ Baud divider register
+    ldr r1, =UART1_BAUDGEN
+    ldr r2, #0x7C
+    str r2, [r1]
 
-    mov r1, #0x28        @ TXRST | RXRST
-    str r1, [r0]
+    ldr r1, =UART1_BAUD_RATE_D
+    mov r2, #6
+    str r2, [r1]
 
-    mov r1, #0x14        @ TXEN | RXEN
-    str r1, [r0]
+    bx lx
 
+UART1_empty_tx:
+    ldr r1, =UART1_SR
+    ldr r2, [r1]
+    ands r2, #0x10 @ check bit 4
+    movne r3, #0
+    moveq r3, #1
+    bx lr
+
+UART1_empty_rx:
+    ldr r1, =UART1_SR
+    ldr r2, [r1]
+    ands r2, #0x4 @ check bit 2
+    movne r3, #0
+    moveq r3, #1
     bx lr
 
 UART1_putC:
-	push {r4,lr} 			@ backup the registers used
-	and r4,r0,#0xFF 		@ save bottom byte R0 (input) to r4
+    rx_empty_loop:
+        push {r0, lr}
+        bl UART1_empty_rx
+        pop {r0, lr}
 
-check_full_loop:
-	bl uart1_tx_empty 		@ check if uart1 tx has room
-	cmp r0,#1 			@ check the return value
-	beq check_full_loop		@ keep checking until room in FIFO
-	ldr r1, =UART1_DATA
-	str r4,[r1]			@write to tx fifo
-	pop {r4,lr}			@restore registers
-	bx lr
+        cmp r3, #1 @ if r3 = 1, rx full
+        beq rx_empty_loop
+    ldr r1, =UART1_FIFO
+    str r0, [r1]
+    bx lr
 
-uart1_tx_empty:
-	mov r0,#0	@init r0
-	ldr r2, =UART1_SR
-	ldr r1, [r2]	@get status flags
-	ands r1, #16	@check if 'bit 4' is set
-	movne r0,#1	@return 1 if set
-	bx lr		@return
+UART1_getC:
+    tx_empty_loop:
+        push {lr}
+        bl UART1_empty_tx
+        pop {lr}
+
+        cmp r3, #1 @ if r3 = 1, tx is full
+        bne tx_empty_loop
+    ldr r1, =UART1_FIFO
+    ldr r0, [r1]
+    bx lr
 
 
 UART1_putS:
@@ -68,30 +95,6 @@ UART1_putS:
         bne putS_loop
 
     mov r1, #0x00
-    bx lr
-
-UART1_empty_rx:
-    mov r0, #0
-    ldr r1, =UART1_BASE
-    add r1, #0x2C  @ offset to Status register
-    ldr r2, [r1]
-
-    ands r2, r2, #0x4 @ check bit 2 (Receiver full bit)
-    movne r0, #1  @ return 1 if bit 2 is set
-
-    bx lr
-
-UART1_getC:
-
-    check_full_rx:
-        push {lr}
-        bl UART1_empty_rx
-        pop {lr}
-        cmp r0, #0          @ check return value
-        beq check_full_rx
-
-    ldr r2, =UART1_BASE
-    ldr r0, [r2, #0x30] @ FIFO register offset
     bx lr
 
 UART1_getS:
