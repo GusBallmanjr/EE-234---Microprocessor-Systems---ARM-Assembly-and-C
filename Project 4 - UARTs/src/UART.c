@@ -27,8 +27,8 @@ uint32_t UART1_empty_TX(void) {
 uint32_t UART1_empty_RX(void) {
     uint32_t* UART1 = (uint32_t*)(UART1_BASE + 0x2C); // FIFO Status Register
 
-    if ((*UART1 & 0x4) != 0) return 1; // Receiver Full bit
-    else return 0;
+    if ((*UART1 & 0x2) != 0) return 0; // Receiver empty bit
+    else return 1;
 }
 
 char UART1_getC(void) {
