@@ -4,7 +4,7 @@ void disable_GIC_distributor(void) {
     *GIC_REG.ICDDCR = 0;
 }
 
-void denable_GIC_distributor(void) {
+void enable_GIC_distributor(void) {
     *GIC_REG.ICDDCR = 1;
 }
 
