@@ -43,6 +43,7 @@ configure_UART1:
 UART1_empty_tx:
     ldr r1, =UART1_SR
     ldr r2, [r1]
+    and r2, r2, #16
     cmp r2, #16
     moveq r3, #1
     movne r3, #0
@@ -51,22 +52,23 @@ UART1_empty_tx:
 UART1_empty_rx:
     ldr r1, =UART1_SR
     ldr r2, [r1]
-    cmp r2, #2
+    and r2, r2, #0x2
+    cmp r2, #0x2
     moveq r3, #0
     movne r3, #1
     bx lr
 
 UART1_putC:
 	tx_empty_loop:
-    push {r0, lr}
+    push {lr}
     bl UART1_empty_tx
-    pop {r0, lr}
+    pop {lr}
 
     cmp r3, #1
     beq tx_empty_loop
 
     ldr r1, =UART1_FIFO
-    str r0, [r1]
+    strb r0, [r1]
     bx lr
 
 UART1_getC:
@@ -76,14 +78,14 @@ UART1_getC:
     pop {lr}
 
     cmp r3, #1
-    bne rx_empty_loop
+    beq rx_empty_loop
 
     ldr r1, =UART1_FIFO
-    ldr r0, [r1]
+    ldrb r0, [r1]
     bx lr
 
 UART1_putS:
-  @ ldr r4, =UART1_data 
+  @ ldr r4, =UART1_data
   mov r4, r0
   mov r5, #128
   ldrb r0, [r4]
