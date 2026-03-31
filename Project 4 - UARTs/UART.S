@@ -83,9 +83,8 @@ UART1_getC:
     bx lr
 
 UART1_putS:
-  ldr r4, =UART1_data
-  
-  
+  @ ldr r4, =UART1_data 
+  mov r4, r0
   mov r5, #128
   ldrb r0, [r4]
 
@@ -107,7 +106,8 @@ putS_done:
     bx lr
 
 UART1_getS:
-    ldr r4, =UART1_data
+    @ ldr r4, =UART1_data
+	mov r4, r0
     mov r5, #128
 
 getS_loop:
