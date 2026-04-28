@@ -1,5 +1,6 @@
 # Slide Switch & XADC Interface Project  
 ### RealDigital BlackBoard — ARM Cortex‑A9 - C Implementation
+## Gus Ballman
 
 ## Overview
 This project demonstrates digital input, analog sampling, and LED output on the **RealDigital BlackBoard**, which uses the **Xilinx Zynq‑7007S SoC** (dual‑core ARM Cortex‑A9 + Artix‑7 FPGA).  
