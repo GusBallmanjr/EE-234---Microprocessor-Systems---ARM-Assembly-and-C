@@ -21,3 +21,4 @@ Work from WSU’s EE 234 ARM‑based microprocessors course. Projects move from 
 + [Project 4 - UARTs](https://github.com/GusBallmanjr/EE-234---Microprocessor-Systems---ARM-Assembly-and-C/tree/main/Project%204%20-%20UARTs)
 + [Project 5 - Interrupts](https://github.com/GusBallmanjr/EE-234---Microprocessor-Systems---ARM-Assembly-and-C/tree/main/Project%205%20-%20Interupts)
 + [Project 6 - SPI and I2C Busses](https://github.com/GusBallmanjr/EE-234---Microprocessor-Systems---ARM-Assembly-and-C/tree/main/Project%206%20-%20SPI%20and%20I2C%20Busses)
++ [Final Project - XADC and LEDs](https://github.com/GusBallmanjr/EE-234---Microprocessor-Systems---ARM-Assembly-and-C/tree/main/Final%20Project)
